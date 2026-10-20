@@ -1,0 +1,56 @@
+.boleta-validate {
+  padding: 2rem 0;
+  display: grid;
+  place-items: center;
+  min-height: 80vh;
+}
+
+.validate-card {
+  width: min(480px, 100%);
+  background: rgba(255, 253, 248, 0.96);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--sombra);
+  text-align: center;
+  border-top: 6px solid var(--verde-disponible);
+}
+
+.validate-card--revoked {
+  border-top-color: var(--rojo-vendido);
+}
+
+.validate-card__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--neutro);
+  margin: 0;
+}
+
+.validate-card h1 {
+  color: var(--rojo-oscuro);
+  font-size: 1.4rem;
+}
+
+.validate-card__number {
+  font-family: var(--fuente-display);
+  font-size: 3rem;
+  color: var(--rojo-oscuro);
+  margin: 0.5rem 0;
+}
+
+.validate-card__status {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.validate-card ul {
+  text-align: left;
+  line-height: 1.55;
+  padding-left: 1.1rem;
+}
+
+.validate-card__note {
+  font-size: 0.85rem;
+  color: var(--neutro);
+}

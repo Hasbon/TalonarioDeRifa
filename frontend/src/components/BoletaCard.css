@@ -1,0 +1,131 @@
+.boleta-card {
+  width: 360px;
+  max-width: 100%;
+  background: #fffdf8;
+  border: 3px solid var(--rojo-oscuro);
+  border-radius: 12px;
+  overflow: hidden;
+  color: #1a1210;
+  box-shadow: var(--sombra);
+}
+
+.boleta-card__band {
+  background: linear-gradient(135deg, var(--rojo-medio), var(--rojo-oscuro));
+  color: #fff8e7;
+  padding: 0.65rem 1rem;
+  text-align: center;
+}
+
+.boleta-card__band span {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.boleta-card__band strong {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem;
+}
+
+.boleta-card__number {
+  font-family: var(--fuente-display);
+  font-size: 3.5rem;
+  text-align: center;
+  color: var(--rojo-oscuro);
+  background: linear-gradient(180deg, #fff6df, #ffe8a8);
+  border-bottom: 2px solid var(--dorado);
+  line-height: 1.2;
+  padding: 0.5rem;
+}
+
+.boleta-card__body {
+  position: relative;
+  padding: 1rem;
+  background-color: #5c0e14;
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+}
+
+.boleta-card__panel {
+  background: rgba(255, 253, 248, 0.88);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  backdrop-filter: blur(1px);
+}
+
+.boleta-card__panel p {
+  margin: 0.4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.boleta-card__panel span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--neutro);
+}
+
+.boleta-card__pay {
+  margin: 0.75rem 0 0 !important;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 700;
+  background: rgba(255, 253, 248, 0.9);
+}
+
+.boleta-card__pay--paid {
+  background: rgba(220, 252, 231, 0.92);
+  color: #14532d;
+}
+
+.boleta-card__pay--partial,
+.boleta-card__pay--unpaid {
+  background: rgba(254, 243, 199, 0.92);
+  color: #92400e;
+}
+
+.boleta-card__qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.75rem;
+  gap: 0.25rem;
+  background: rgba(255, 253, 248, 0.95);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.boleta-card__id,
+.boleta-card__disclaimer {
+  font-size: 0.75rem !important;
+  color: #1a1210 !important;
+  text-align: center;
+  margin-top: 0.5rem !important;
+  background: rgba(255, 253, 248, 0.88);
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+}
+
+.boleta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.boleta-preview-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.boleta-preview-page.capture-mode {
+  background: white;
+  min-height: 100vh;
+}

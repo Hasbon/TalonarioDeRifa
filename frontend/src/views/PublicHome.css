@@ -1,0 +1,153 @@
+.public-home {
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.hero-flyer {
+  position: relative;
+  width: 100%;
+  min-height: min(100vh, 920px);
+  max-height: none;
+  overflow: hidden;
+  background: #5c0e14;
+  animation: heroIn 0.8s ease both;
+}
+
+.hero-flyer__image {
+  display: block;
+  width: 100%;
+  height: min(100vh, 920px);
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hero-flyer__overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.25rem 1rem 1.75rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(40, 8, 10, 0.55) 35%,
+    rgba(40, 8, 10, 0.88) 100%
+  );
+}
+
+.public-home__body {
+  position: relative;
+  z-index: 1;
+  margin-top: -0.5rem;
+}
+
+.prize-section,
+.board-section,
+.info-section,
+.rules-section,
+.contact-section {
+  background: rgba(255, 253, 248, 0.92);
+  border-radius: 16px;
+  padding: 1.5rem 1.35rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--sombra);
+  animation: fadeUp 0.6s ease both;
+}
+
+.prize-section {
+  border-top: 4px solid var(--dorado);
+  text-align: center;
+}
+
+.prize-flyer {
+  display: block;
+  width: min(100%, 520px);
+  height: auto;
+  margin: 0.75rem auto 1rem;
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+}
+
+.prize-main {
+  font-family: var(--fuente-display);
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  color: var(--rojo-oscuro);
+  margin: 0.5rem 0;
+}
+
+.prize-alt {
+  font-size: 1.05rem;
+}
+
+.prize-alt strong {
+  color: var(--dorado);
+}
+
+.prize-note {
+  color: var(--neutro);
+  font-size: 0.95rem;
+}
+
+.info-list {
+  padding-left: 1.2rem;
+  line-height: 1.6;
+}
+
+.rules-text {
+  white-space: pre-wrap;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  background: var(--marfil-oscuro);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.privacy {
+  font-size: 0.92rem;
+  color: #4a3c36;
+  line-height: 1.5;
+}
+
+.public-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--neutro);
+  padding: 1rem 0 2rem;
+}
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-flyer,
+  .hero-flyer__image {
+    height: auto;
+    min-height: 70vh;
+    max-height: none;
+  }
+
+  .hero-flyer__image {
+    height: auto;
+    min-height: 70vh;
+    object-fit: cover;
+  }
+}

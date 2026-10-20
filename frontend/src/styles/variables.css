@@ -1,0 +1,18 @@
+:root {
+  --rojo-oscuro: #7a1218;
+  --rojo-medio: #a61c24;
+  --rojo-vendido: #c0392b;
+  --dorado: #c9a227;
+  --dorado-claro: #e8c547;
+  --marfil: #f7f1e8;
+  --marfil-oscuro: #ebe3d5;
+  --verde-disponible: #1e7a3a;
+  --verde-claro: #2d9a4e;
+  --neutro: #6b6b6b;
+  --texto: #1a1210;
+  --blanco: #ffffff;
+  --sombra: 0 8px 28px rgba(72, 16, 18, 0.12);
+  --radio: 10px;
+  --fuente-display: "Playfair Display", "Georgia", serif;
+  --fuente-cuerpo: "Source Sans 3", "Segoe UI", sans-serif;
+}

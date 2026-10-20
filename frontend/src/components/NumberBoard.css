@@ -1,0 +1,99 @@
+.number-board {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 1.25rem 0;
+}
+
+@media (max-width: 640px) {
+  .number-board {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+}
+
+.number-board .cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  user-select: none;
+  animation: cellIn 0.35s ease both;
+}
+
+.number-board .cell.available {
+  background: linear-gradient(145deg, var(--verde-claro), var(--verde-disponible));
+  color: white;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.number-board .cell.taken {
+  background: linear-gradient(145deg, #d64545, var(--rojo-vendido));
+  color: white;
+  opacity: 0.92;
+}
+
+button.cell {
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--fuente-cuerpo);
+}
+
+button.cell:hover:not(:disabled) {
+  transform: scale(1.06);
+  z-index: 1;
+}
+
+button.cell:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.board-empty {
+  text-align: center;
+  color: var(--neutro);
+}
+
+@keyframes cellIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.board-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+}
+
+.board-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.swatch.green {
+  background: var(--verde-disponible);
+}
+
+.swatch.red {
+  background: var(--rojo-vendido);
+}

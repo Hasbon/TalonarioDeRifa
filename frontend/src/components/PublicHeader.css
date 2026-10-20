@@ -1,0 +1,86 @@
+.public-header {
+  padding: 2.5rem 0 1.5rem;
+  text-align: center;
+  animation: fadeUp 0.7s ease;
+}
+
+.public-header--compact {
+  padding: 0.5rem 0 0;
+  color: #fff9f0;
+}
+
+.public-header--compact .public-header__meta .label {
+  color: rgba(255, 248, 231, 0.85);
+}
+
+.public-header--compact .public-header__meta strong {
+  color: #fff;
+}
+
+.public-header--compact .public-header__meta .price {
+  color: var(--dorado-claro);
+}
+
+.public-header--compact .public-header__login {
+  border-color: rgba(255, 248, 231, 0.75);
+  color: #fff8e7;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.public-header__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  color: var(--rojo-medio);
+  font-weight: 700;
+}
+
+.public-header__title {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  color: var(--rojo-oscuro);
+  line-height: 1.15;
+}
+
+.public-header__desc {
+  max-width: 36rem;
+  margin: 0.5rem auto 1.25rem;
+  color: #4a3c36;
+  font-size: 1.05rem;
+}
+
+.public-header__meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.public-header__meta .label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--neutro);
+}
+
+.public-header__meta .price {
+  color: var(--dorado);
+  font-size: 1.35rem;
+}
+
+.public-header__login {
+  display: inline-block;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
