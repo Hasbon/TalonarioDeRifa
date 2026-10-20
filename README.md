@@ -25,7 +25,7 @@ Frontend y backend se comunican **solo** mediante la API REST documentada en `/d
 
 - Premio: cerdo de 90 kg + garrafa de aguardiente  
 - Alternativa: $1.200.000 COP  
-- Precio boleta: $35.000 COP  
+- Precio boleta: $30.000 COP  
 - Números: `00` … `99` (se conservan ceros a la izquierda)  
 - Ganador: dos últimas cifras del premio mayor de la Lotería del Valle  
 

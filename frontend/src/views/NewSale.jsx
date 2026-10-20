@@ -7,7 +7,7 @@ import './FormPages.css';
 export default function NewSale() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const [ticketPrice, setTicketPrice] = useState(35000);
+  const [ticketPrice, setTicketPrice] = useState(30000);
   const [form, setForm] = useState({
     customer_full_name: '',
     customer_phone: '',

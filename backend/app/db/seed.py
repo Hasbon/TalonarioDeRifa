@@ -10,7 +10,7 @@ from app.models.ticket import Ticket
 DEFAULT_RULES = """REGLAMENTO DE LA RIFA
 
 1. Se rifan 100 números del 00 al 99.
-2. Precio de cada boleta: $35.000 COP (precio vigente al momento de la asignación).
+2. Precio de cada boleta: $30.000 COP (precio vigente al momento de la asignación).
 3. Premio principal: un cerdo de 90 kilogramos y una garrafa de aguardiente.
 4. Premio alternativo: $1.200.000 COP en efectivo, sujeto a las condiciones oficiales.
 5. Fecha del sorteo: 30 de diciembre de 2026.
@@ -37,7 +37,7 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
             description="Rifa digital de fin de año. 100 números del 00 al 99.",
             primary_prize="Un cerdo de 90 kilogramos y una garrafa de aguardiente",
             alternative_prize_amount=1_200_000,
-            ticket_price=35_000,
+            ticket_price=30_000,
             draw_date=date(2026, 12, 30),
             delivery_datetime=delivery.astimezone(timezone.utc),
             lottery_name="Lotería del Valle",
@@ -49,6 +49,12 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
         )
         db.add(raffle)
         db.flush()
+    else:
+        # Sync official catalog price for new installations / local resets.
+        # Existing sales keep their historical sales.ticket_price.
+        if raffle.ticket_price != 30_000:
+            raffle.ticket_price = 30_000
+            raffle.public_rules = DEFAULT_RULES
 
     existing = {t.number_code for t in raffle.tickets}
     for i in range(100):

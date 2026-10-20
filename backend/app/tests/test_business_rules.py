@@ -18,10 +18,10 @@ def test_100_numbers_created_with_leading_zeros(client):
     assert all(len(c) == 2 for c in codes)
 
 
-def test_initial_ticket_price_35000(client):
+def test_initial_ticket_price_30000(client):
     r = client.get("/api/public/raffle")
     assert r.status_code == 200
-    assert r.json()["ticket_price"] == 35000
+    assert r.json()["ticket_price"] == 30000
     assert r.json()["draw_date"] == "2026-12-30"
 
 
@@ -41,7 +41,7 @@ def test_assignment_without_full_payment_stays_active(client, seller_token):
     sale = r.json()
     assert sale["commercial_status"] == "active"
     assert sale["payment_status"] == "partial"
-    assert sale["balance_due"] == 25000
+    assert sale["balance_due"] == 20000
     assert sale["number_code"] == "27"
 
     pub = client.get("/api/public/tickets/27")
@@ -161,11 +161,11 @@ def test_payments_sum_and_balance(client, seller_token):
     p2 = client.post(
         f"/api/sales/{sale_id}/payments",
         headers=auth(seller_token),
-        json={"amount": 15000, "payment_method": "transferencia"},
+        json={"amount": 10000, "payment_method": "transferencia"},
     )
     assert p2.status_code == 201
     sale = client.get(f"/api/sales/{sale_id}", headers=auth(seller_token)).json()
-    assert sale["total_paid"] == 25000
+    assert sale["total_paid"] == 20000
     assert sale["balance_due"] == 10000
     assert sale["payment_status"] == "partial"
 
@@ -196,7 +196,7 @@ def test_voided_payments_not_counted(client, seller_token, admin_token):
     assert void.status_code == 200
     sale = client.get(f"/api/sales/{sale_id}", headers=auth(seller_token)).json()
     assert sale["total_paid"] == 0
-    assert sale["balance_due"] == 35000
+    assert sale["balance_due"] == 30000
 
 
 def test_seller_cannot_admin_actions(client, seller_token):
@@ -245,7 +245,7 @@ def test_qr_token_validation(client, seller_token):
             "customer_full_name": "QR Cliente",
             "customer_phone": "3188889900",
             "number_code": "66",
-            "initial_payment": 35000,
+            "initial_payment": 30000,
         },
     )
     token = r.json()["public_token"]
@@ -310,7 +310,7 @@ def test_reports_match_db(client, seller_token, admin_token):
     assert stats["assigned"] >= 1
     assert stats["available"] == stats["total_numbers"] - stats["assigned"]
     assert stats["total_received"] >= 10000
-    assert stats["total_outstanding"] >= 25000
+    assert stats["total_outstanding"] >= 20000
 
 
 def test_draw_dates_remain_2026(client):
