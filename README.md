@@ -166,12 +166,14 @@ En Windows puede usar `docker compose exec -T db pg_dump -U rifa rifa_digital > 
 
 ## Producción (checklist)
 
-1. PostgreSQL gestionado o Compose con volúmenes persistentes  
+**Guía recomendada (Firebase Hosting `*.web.app` + Heroku API/Postgres):** ver [DEPLOY.md](DEPLOY.md).
+
+1. PostgreSQL gestionado (Heroku Postgres) o Compose con volúmenes persistentes  
 2. `SECRET_KEY` fuerte y único  
 3. `CORS_ORIGINS` restringido al dominio real  
 4. `PUBLIC_BASE_URL` con HTTPS  
-5. Reverse proxy (Nginx/Caddy) con TLS  
-6. `npm run build` del frontend y servir `frontend/dist`  
+5. Reverse proxy (Nginx/Caddy) con TLS, o Heroku + Firebase Hosting  
+6. `npm run build` del frontend y servir `frontend/dist` (Firebase Hosting)  
 7. Crear admin con `create_admin` (sin contraseñas por defecto en el repo)  
 8. Programar backups y probar restauración  
 9. Cumplir requisitos legales y de Habeas Data antes de publicar  

@@ -8,6 +8,18 @@ export function formatCOP(amount) {
 
 export function formatDate(iso) {
   if (!iso) return '—';
+  // Date-only (YYYY-MM-DD) must not be parsed as UTC midnight or the
+  // day shifts in America/Bogota.
+  const dateOnly = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (dateOnly) {
+    const [, y, m, day] = dateOnly;
+    const d = new Date(Number(y), Number(m) - 1, Number(day));
+    return d.toLocaleDateString('es-CO', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
   const d = new Date(iso);
   return d.toLocaleDateString('es-CO', {
     timeZone: 'America/Bogota',

@@ -15,8 +15,12 @@ htmlcov/
 node_modules/
 frontend/dist/
 frontend/.env
+frontend/.env.production
 *.log
 .DS_Store
+
+# Firebase
+.firebase/
 
 # IDE
 .idea/
