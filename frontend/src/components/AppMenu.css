@@ -141,26 +141,27 @@
     padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
     padding-right: max(0.55rem, env(safe-area-inset-right, 0px));
     min-height: 44px;
+    overflow-x: hidden;
   }
 
-  .app-menu__brand strong {
-    font-size: 0.9rem;
-  }
-
-  .app-menu__user,
-  .app-menu__role {
+  .app-menu__brand {
     display: none;
   }
 
   .app-menu__radio {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: 100%;
     flex-wrap: nowrap;
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--dorado) rgba(26, 8, 10, 0.5);
-    max-width: none;
+    scrollbar-width: none;
+  }
+
+  .app-menu__radio::-webkit-scrollbar {
+    display: none;
   }
 
   .app-menu__radio label {
@@ -189,12 +190,6 @@
 }
 
 @media (max-width: 480px) {
-  .app-menu__brand strong {
-    max-width: 4.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   .app-menu__radio label {
     font-size: 0.58rem;
     padding: 0.35rem 0.55rem;
