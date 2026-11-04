@@ -25,13 +25,13 @@ class UserOut(BaseModel):
 
 class UserCreate(BaseModel):
     username: str = Field(min_length=3, max_length=64)
-    password: str = Field(min_length=10, max_length=128)
+    password: str = Field(min_length=5, max_length=128)
     full_name: str = Field(min_length=2, max_length=200)
     role: UserRole = UserRole.SELLER
 
 
 class UserUpdate(BaseModel):
     full_name: str | None = None
-    password: str | None = Field(default=None, min_length=10, max_length=128)
+    password: str | None = Field(default=None, min_length=5, max_length=128)
     is_active: bool | None = None
     role: UserRole | None = None

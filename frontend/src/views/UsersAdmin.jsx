@@ -64,12 +64,12 @@ export default function UsersAdmin() {
         </div>
         <div className="form-row">
           <div className="form-group">
-            <label>Contraseña (mín. 10)</label>
+            <label>Contraseña (mín. 5)</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              minLength={10}
+              minLength={5}
               required
             />
           </div>

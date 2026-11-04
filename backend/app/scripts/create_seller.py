@@ -22,9 +22,9 @@ def main() -> int:
     parser.add_argument("--password", default=None)
     args = parser.parse_args()
 
-    password = args.password or getpass.getpass("Contraseña (mín. 10 caracteres): ")
-    if len(password) < 10:
-        print("Error: la contraseña debe tener al menos 10 caracteres.", file=sys.stderr)
+    password = args.password or getpass.getpass("Contraseña (mín. 5 caracteres): ")
+    if len(password) < 5:
+        print("Error: la contraseña debe tener al menos 5 caracteres.", file=sys.stderr)
         return 1
 
     Base.metadata.create_all(bind=engine)
