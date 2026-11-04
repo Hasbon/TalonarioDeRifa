@@ -109,37 +109,66 @@
     grid-template-columns: 1fr;
   }
 
+  /* Barra colapsada ~40px (~5% de viewport típico) */
   .app-nav {
     position: sticky;
     top: 0;
     z-index: 20;
     gap: 0;
-    padding: 0.65rem 0.85rem;
-    box-shadow: 0 6px 18px rgba(40, 8, 10, 0.28);
+    padding: 0;
+    min-height: 0;
+    box-shadow: 0 4px 12px rgba(40, 8, 10, 0.22);
   }
 
   .app-nav__bar {
     align-items: center;
+    min-height: 40px;
+    height: 40px;
+    padding: 0 0.55rem 0 0.75rem;
   }
 
   .app-nav__brand strong {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Barra compacta: solo título + botón */
   .app-nav__user,
   .app-nav__role {
     display: none;
   }
 
+  .app-shell--menu-open .app-nav__bar {
+    height: auto;
+    min-height: 40px;
+    padding-top: 0.45rem;
+    padding-bottom: 0.35rem;
+    align-items: flex-start;
+  }
+
   .app-shell--menu-open .app-nav__user,
   .app-shell--menu-open .app-nav__role {
     display: block;
-    margin-top: 0.15rem;
+    margin-top: 0.12rem;
+    font-size: 0.78rem;
+    line-height: 1.2;
   }
 
   .app-nav__toggle {
     display: inline-flex;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+
+  .app-nav__toggle-label {
+    display: none;
+  }
+
+  .app-nav__toggle-icon {
+    font-size: 1.05rem;
   }
 
   .app-shell--menu-open .app-nav__toggle {
@@ -147,13 +176,12 @@
     border-color: rgba(201, 162, 39, 0.65);
   }
 
-  /* Cerrado por defecto en móvil */
   .app-nav__panel {
     display: none;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
+    margin: 0;
+    padding: 0.55rem 0.75rem 0.7rem;
     border-top: 1px solid rgba(255, 248, 231, 0.18);
-    gap: 0.85rem;
+    gap: 0.7rem;
   }
 
   .app-shell--menu-open .app-nav__panel {
@@ -164,16 +192,16 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 0.2rem;
+    gap: 0.15rem;
     width: 100%;
   }
 
   .app-nav a {
-    padding: 0.7rem 0.85rem;
-    font-size: 1rem;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.95rem;
   }
 
   .app-main {
-    padding: 1rem 0.9rem 1.5rem;
+    padding: 0.85rem 0.85rem 1.25rem;
   }
 }
