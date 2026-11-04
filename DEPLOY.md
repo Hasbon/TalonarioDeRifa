@@ -244,21 +244,39 @@ firebase deploy --only hosting
 
 ---
 
-## Comandos útiles después del primer deploy
+## Redeploy rápido (scripts)
+
+Desde la raíz del repo en PowerShell (hace falta haber hecho **commit** de los cambios del backend):
 
 ```powershell
-# Redeploy solo API (desde la raíz del repo)
-git subtree push --prefix backend heroku main
+# Solo API → Heroku
+.\scripts\deploy-api.ps1
 
-# Redeploy solo front
-cd frontend; npm run build; cd ..; firebase deploy --only hosting
+# Solo frontend → Firebase
+.\scripts\deploy-front.ps1
 
-# Ver config / logs
-heroku config
-heroku logs --tail
+# Ambos
+.\scripts\deploy-all.ps1
+```
 
-# Reiniciar dyno
-heroku restart
+Si PowerShell bloquea la ejecución de scripts:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Notas:
+
+- `deploy-api.ps1` exige working tree limpio (todo commiteado).
+- `deploy-front.ps1` usa `frontend\.env.production` (no hace falta commit del front para Firebase).
+- Si cambias `VITE_*`, hay que volver a correr `deploy-front.ps1`.
+
+### Comandos útiles
+
+```powershell
+heroku config -a talonario-rifas-api
+heroku logs --tail -a talonario-rifas-api
+heroku restart -a talonario-rifas-api
 ```
 
 ---
@@ -267,6 +285,9 @@ heroku restart
 
 | Archivo | Rol |
 |---------|-----|
+| `scripts/deploy-api.ps1` | Redeploy backend a Heroku (subtree + token) |
+| `scripts/deploy-front.ps1` | Build Vite + `firebase deploy --only hosting` |
+| `scripts/deploy-all.ps1` | API + frontend |
 | `backend/Procfile` | `release` (Alembic) + `web` (Uvicorn en `$PORT`) |
 | `backend/runtime.txt` | Python 3.12 en Heroku |
 | `backend/app/core/config.py` | Normaliza `DATABASE_URL` de Heroku |
