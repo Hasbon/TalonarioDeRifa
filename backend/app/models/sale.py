@@ -1,11 +1,12 @@
 import uuid
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Date, DateTime, Enum, ForeignKey, Index, Integer, String, Text, text
+from sqlalchemy import Date, DateTime, ForeignKey, Index, Integer, String, Text, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.enums import CommercialStatus, PaymentStatusSale
 from app.db.base import Base
+from app.db.types import str_enum
 
 
 def _uuid() -> str:
@@ -34,10 +35,10 @@ class Sale(Base):
     seller_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), nullable=False)
     ticket_price: Mapped[int] = mapped_column(Integer, nullable=False)
     commercial_status: Mapped[CommercialStatus] = mapped_column(
-        Enum(CommercialStatus), default=CommercialStatus.ACTIVE, nullable=False
+        str_enum(CommercialStatus), default=CommercialStatus.ACTIVE, nullable=False
     )
     payment_status: Mapped[PaymentStatusSale] = mapped_column(
-        Enum(PaymentStatusSale), default=PaymentStatusSale.UNPAID, nullable=False
+        str_enum(PaymentStatusSale), default=PaymentStatusSale.UNPAID, nullable=False
     )
     payment_due_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     internal_notes: Mapped[str | None] = mapped_column(Text, nullable=True)

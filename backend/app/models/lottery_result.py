@@ -1,11 +1,12 @@
 import uuid
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Date, DateTime, Enum, ForeignKey, String, Text
+from sqlalchemy import Date, DateTime, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.enums import VerificationStatus
 from app.db.base import Base
+from app.db.types import str_enum
 
 
 def _uuid() -> str:
@@ -28,7 +29,7 @@ class LotteryResult(Base):
     derived_winner_code: Mapped[str] = mapped_column(String(2), nullable=False)
     official_source_url: Mapped[str] = mapped_column(String(500), nullable=False)
     verification_status: Mapped[VerificationStatus] = mapped_column(
-        Enum(VerificationStatus), default=VerificationStatus.DRAFT, nullable=False
+        str_enum(VerificationStatus), default=VerificationStatus.DRAFT, nullable=False
     )
     verified_by: Mapped[str | None] = mapped_column(String(36), ForeignKey("users.id"), nullable=True)
     verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

@@ -1,11 +1,12 @@
 import uuid
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Date, DateTime, Enum, Integer, String, Text
+from sqlalchemy import Date, DateTime, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.enums import RaffleStatus
 from app.db.base import Base
+from app.db.types import str_enum
 
 
 def _uuid() -> str:
@@ -30,7 +31,7 @@ class Raffle(Base):
     lottery_name: Mapped[str] = mapped_column(String(200), nullable=False)
     lottery_draw_reference: Mapped[str] = mapped_column(String(255), nullable=False, default="")
     status: Mapped[RaffleStatus] = mapped_column(
-        Enum(RaffleStatus), default=RaffleStatus.ACTIVE, nullable=False
+        str_enum(RaffleStatus), default=RaffleStatus.ACTIVE, nullable=False
     )
     public_contact: Mapped[str] = mapped_column(Text, nullable=False, default="")
     public_rules: Mapped[str] = mapped_column(Text, nullable=False, default="")

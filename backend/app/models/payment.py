@@ -1,11 +1,12 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.enums import PaymentRecordStatus
 from app.db.base import Base
+from app.db.types import str_enum
 
 
 def _uuid() -> str:
@@ -25,7 +26,7 @@ class Payment(Base):
     payment_method: Mapped[str] = mapped_column(String(64), nullable=False)
     payment_reference: Mapped[str | None] = mapped_column(String(200), nullable=True)
     status: Mapped[PaymentRecordStatus] = mapped_column(
-        Enum(PaymentRecordStatus), default=PaymentRecordStatus.CONFIRMED, nullable=False
+        str_enum(PaymentRecordStatus), default=PaymentRecordStatus.CONFIRMED, nullable=False
     )
     registered_by: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), nullable=False)
     payment_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
