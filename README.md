@@ -3,7 +3,7 @@
 Plataforma web completa para administrar una rifa de 100 números (00 al 99), con página pública, panel de vendedores, abonos, boletas digitales con QR, reportes y confirmación del resultado del sorteo.
 
 **Idioma:** español · **Moneda:** COP · **Zona horaria:** America/Bogota  
-**Sorteo configurado:** 30 de diciembre de 2026 · **Entrega:** 31 de diciembre de 2026, 10:00 a. m.
+**Sorteo configurado:** 22 de diciembre de 2026 · **Entrega:** 23 de diciembre de 2026, 11:00 a. m.
 
 > **Aviso legal:** Antes de publicar o comercializar la rifa, verifique los requisitos aplicables en Colombia para rifas y juegos de suerte y azar, así como las obligaciones de protección de datos personales (Ley 1581 de 2012). Este software **no constituye autorización oficial**.
 

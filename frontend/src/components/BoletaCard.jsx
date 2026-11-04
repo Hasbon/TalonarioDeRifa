@@ -42,7 +42,7 @@ const BoletaCard = forwardRef(function BoletaCard({ sale, raffle }, ref) {
           </p>
           <p>
             <span>Sorteo</span>
-            <strong>{formatDate(raffle?.draw_date || '2026-12-30')}</strong>
+            <strong>{formatDate(raffle?.draw_date || '2026-12-22')}</strong>
           </p>
           <p>
             <span>Entrega</span>

@@ -22,7 +22,7 @@ def test_initial_ticket_price_30000(client):
     r = client.get("/api/public/raffle")
     assert r.status_code == 200
     assert r.json()["ticket_price"] == 30000
-    assert r.json()["draw_date"] == "2026-12-30"
+    assert r.json()["draw_date"] == "2026-12-22"
 
 
 def test_assignment_without_full_payment_stays_active(client, seller_token):
@@ -208,7 +208,7 @@ def test_seller_cannot_admin_actions(client, seller_token):
         json={
             "lottery_name": "Lotería del Valle",
             "draw_reference": "test",
-            "draw_date": "2026-12-30",
+            "draw_date": "2026-12-22",
             "winning_number": "12347",
             "official_source_url": "https://example.com",
         },
@@ -272,7 +272,7 @@ def test_winner_derivation_and_confirm(client, admin_token):
         json={
             "lottery_name": "Lotería del Valle",
             "draw_reference": "Sorteo 30-dic-2026",
-            "draw_date": "2026-12-30",
+            "draw_date": "2026-12-22",
             "winning_number": "458147",
             "official_source_url": "https://example.com/oficial",
         },
@@ -316,4 +316,4 @@ def test_reports_match_db(client, seller_token, admin_token):
 def test_draw_dates_remain_2026(client):
     raffle = client.get("/api/public/raffle").json()
     assert raffle["draw_date"].startswith("2026")
-    assert "2026-12-31" in raffle["delivery_datetime"]
+    assert "2026-12-23" in raffle["delivery_datetime"]

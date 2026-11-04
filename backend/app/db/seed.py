@@ -7,15 +7,19 @@ from app.core.enums import RaffleStatus
 from app.models.raffle import Raffle
 from app.models.ticket import Ticket
 
+OFFICIAL_DRAW_DATE = date(2026, 12, 22)
+OFFICIAL_TICKET_PRICE = 30_000
+OFFICIAL_LOTTERY_REF = "Sorteo del 22 de diciembre de 2026 (premio mayor)"
+
 DEFAULT_RULES = """REGLAMENTO DE LA RIFA
 
 1. Se rifan 100 números del 00 al 99.
 2. Precio de cada boleta: $30.000 COP (precio vigente al momento de la asignación).
 3. Premio principal: un cerdo de 90 kilogramos y una garrafa de aguardiente.
 4. Premio alternativo: $1.200.000 COP en efectivo, sujeto a las condiciones oficiales.
-5. Fecha del sorteo: 30 de diciembre de 2026.
+5. Fecha del sorteo: 22 de diciembre de 2026.
 6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería del Valle del sorteo previamente definido.
-7. Entrega del premio: 31 de diciembre de 2026 a las 10:00 a. m., hora de Colombia (America/Bogota).
+7. Entrega del premio: 23 de diciembre de 2026 a las 11:00 a. m., hora de Colombia (America/Bogota).
 8. La asignación de un número lo reserva aunque el pago no esté completo. Solo se libera mediante anulación autorizada.
 9. Antes de comercializar, verifique los requisitos legales aplicables en Colombia para rifas y juegos de suerte y azar.
 10. Este software no constituye por sí solo una autorización oficial para operar la rifa.
@@ -27,21 +31,25 @@ Los datos personales de compradores (nombre y teléfono) se recopilan únicament
 """
 
 
+def _official_delivery_utc() -> datetime:
+    bogota = ZoneInfo("America/Bogota")
+    delivery = datetime(2026, 12, 23, 11, 0, 0, tzinfo=bogota)
+    return delivery.astimezone(timezone.utc)
+
+
 def ensure_raffle_and_tickets(db: Session) -> Raffle:
     raffle = db.query(Raffle).first()
     if raffle is None:
-        bogota = ZoneInfo("America/Bogota")
-        delivery = datetime(2026, 12, 31, 10, 0, 0, tzinfo=bogota)
         raffle = Raffle(
             name="Rifa Fin de Año 2026",
             description="Rifa digital de fin de año. 100 números del 00 al 99.",
             primary_prize="Un cerdo de 90 kilogramos y una garrafa de aguardiente",
             alternative_prize_amount=1_200_000,
-            ticket_price=30_000,
-            draw_date=date(2026, 12, 30),
-            delivery_datetime=delivery.astimezone(timezone.utc),
+            ticket_price=OFFICIAL_TICKET_PRICE,
+            draw_date=OFFICIAL_DRAW_DATE,
+            delivery_datetime=_official_delivery_utc(),
             lottery_name="Lotería del Valle",
-            lottery_draw_reference="Sorteo del 30 de diciembre de 2026 (premio mayor)",
+            lottery_draw_reference=OFFICIAL_LOTTERY_REF,
             status=RaffleStatus.ACTIVE,
             public_contact="Contacto del organizador: configurar en panel de administración.",
             public_rules=DEFAULT_RULES,
@@ -50,10 +58,23 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
         db.add(raffle)
         db.flush()
     else:
-        # Sync official catalog price for new installations / local resets.
+        # Sync official catalog fields for local/dev resets.
         # Existing sales keep their historical sales.ticket_price.
-        if raffle.ticket_price != 30_000:
-            raffle.ticket_price = 30_000
+        changed = False
+        if raffle.ticket_price != OFFICIAL_TICKET_PRICE:
+            raffle.ticket_price = OFFICIAL_TICKET_PRICE
+            changed = True
+        if raffle.draw_date != OFFICIAL_DRAW_DATE:
+            raffle.draw_date = OFFICIAL_DRAW_DATE
+            changed = True
+        official_delivery = _official_delivery_utc()
+        if raffle.delivery_datetime != official_delivery:
+            raffle.delivery_datetime = official_delivery
+            changed = True
+        if raffle.lottery_draw_reference != OFFICIAL_LOTTERY_REF:
+            raffle.lottery_draw_reference = OFFICIAL_LOTTERY_REF
+            changed = True
+        if changed or "30 de diciembre" in (raffle.public_rules or ""):
             raffle.public_rules = DEFAULT_RULES
 
     existing = {t.number_code for t in raffle.tickets}
