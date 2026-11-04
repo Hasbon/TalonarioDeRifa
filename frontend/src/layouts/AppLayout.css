@@ -13,7 +13,7 @@
   gap: 1rem;
 }
 
-.app-nav__top {
+.app-nav__bar {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -30,8 +30,8 @@
   font-size: 1.2rem;
 }
 
-.app-nav__brand span,
-.app-nav__brand small {
+.app-nav__user,
+.app-nav__role {
   display: block;
   opacity: 0.85;
   font-size: 0.9rem;
@@ -40,26 +40,25 @@
 .app-nav__toggle {
   display: none;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   flex-shrink: 0;
   margin: 0;
-  padding: 0.45rem 0.7rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid rgba(255, 248, 231, 0.45);
   border-radius: 8px;
-  background: rgba(255, 248, 231, 0.08);
+  background: rgba(255, 248, 231, 0.1);
   color: #fff8e7;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  line-height: 1;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.app-nav__toggle-bars {
-  display: block;
-  width: 1rem;
-  height: 0.7rem;
-  border-block: 2px solid currentColor;
-  background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+.app-nav__toggle-icon {
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
 .app-nav__panel {
@@ -115,39 +114,63 @@
     top: 0;
     z-index: 20;
     gap: 0;
-    padding: 0.75rem 0.9rem;
+    padding: 0.65rem 0.85rem;
+    box-shadow: 0 6px 18px rgba(40, 8, 10, 0.28);
+  }
+
+  .app-nav__bar {
+    align-items: center;
+  }
+
+  .app-nav__brand strong {
+    font-size: 1.05rem;
+  }
+
+  /* Barra compacta: solo título + botón */
+  .app-nav__user,
+  .app-nav__role {
+    display: none;
+  }
+
+  .app-shell--menu-open .app-nav__user,
+  .app-shell--menu-open .app-nav__role {
+    display: block;
+    margin-top: 0.15rem;
   }
 
   .app-nav__toggle {
     display: inline-flex;
   }
 
+  .app-shell--menu-open .app-nav__toggle {
+    background: rgba(201, 162, 39, 0.28);
+    border-color: rgba(201, 162, 39, 0.65);
+  }
+
+  /* Cerrado por defecto en móvil */
   .app-nav__panel {
     display: none;
-    flex-direction: column;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 248, 231, 0.18);
     gap: 0.85rem;
-    margin-top: 0.85rem;
   }
 
   .app-shell--menu-open .app-nav__panel {
     display: flex;
   }
 
-  .app-shell--menu-open .app-nav__toggle {
-    background: rgba(201, 162, 39, 0.22);
-    border-color: rgba(201, 162, 39, 0.55);
-  }
-
   .app-nav nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
     width: 100%;
   }
 
   .app-nav a {
-    padding: 0.45rem 0.7rem;
-    font-size: 0.9rem;
+    padding: 0.7rem 0.85rem;
+    font-size: 1rem;
   }
 
   .app-main {

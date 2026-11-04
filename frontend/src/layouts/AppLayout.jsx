@@ -21,12 +21,12 @@ export default function AppLayout() {
 
   return (
     <div className={`app-shell${menuOpen ? ' app-shell--menu-open' : ''}`}>
-      <aside className="app-nav">
-        <div className="app-nav__top">
+      <aside className="app-nav" aria-label="Navegación del panel">
+        <div className="app-nav__bar">
           <div className="app-nav__brand">
             <strong>Rifa Digital</strong>
-            <span>{user.full_name}</span>
-            <small>{isAdmin ? 'Administrador' : 'Vendedor'}</small>
+            <span className="app-nav__user">{user.full_name}</span>
+            <small className="app-nav__role">{isAdmin ? 'Administrador' : 'Vendedor'}</small>
           </div>
           <button
             type="button"
@@ -35,8 +35,10 @@ export default function AppLayout() {
             aria-controls="app-nav-panel"
             onClick={() => setMenuOpen((open) => !open)}
           >
-            <span className="app-nav__toggle-bars" aria-hidden="true" />
-            {menuOpen ? 'Ocultar menú' : 'Menú'}
+            <span className="app-nav__toggle-icon" aria-hidden="true">
+              {menuOpen ? '✕' : '☰'}
+            </span>
+            <span className="app-nav__toggle-label">{menuOpen ? 'Cerrar' : 'Menú'}</span>
           </button>
         </div>
 
