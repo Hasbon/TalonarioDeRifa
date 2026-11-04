@@ -13,9 +13,10 @@ RULES = """REGLAMENTO DE LA RIFA
 5. Fecha del sorteo: 22 de diciembre de 2026.
 6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería de la Cruz Roja del sorteo previamente definido.
 7. Entrega del premio: 23 de diciembre de 2026 a las 11:00 a. m., hora de Colombia (America/Bogota).
-8. La asignación de un número lo reserva aunque el pago no esté completo. Solo se libera mediante anulación autorizada.
-9. Antes de comercializar, verifique los requisitos legales aplicables en Colombia para rifas y juegos de suerte y azar.
-10. Este software no constituye por sí solo una autorización oficial para operar la rifa.
+8. Boleta que no esté paga no juega. Solo participa en el sorteo la boleta cuyo valor total esté completamente pagado antes del sorteo. Un abono parcial reserva el número, pero no otorga derecho a reclamar el premio.
+9. La asignación de un número lo reserva aunque el pago no esté completo. Solo se libera mediante anulación autorizada.
+10. Antes de comercializar, verifique los requisitos legales aplicables en Colombia para rifas y juegos de suerte y azar.
+11. Este software no constituye por sí solo una autorización oficial para operar la rifa.
 """
 
 
