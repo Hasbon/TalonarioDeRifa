@@ -58,24 +58,13 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
         db.add(raffle)
         db.flush()
     else:
-        # Sync official catalog fields for local/dev resets.
+        # Always sync official catalog (dates, price, rules, lottery ref).
         # Existing sales keep their historical sales.ticket_price.
-        changed = False
-        if raffle.ticket_price != OFFICIAL_TICKET_PRICE:
-            raffle.ticket_price = OFFICIAL_TICKET_PRICE
-            changed = True
-        if raffle.draw_date != OFFICIAL_DRAW_DATE:
-            raffle.draw_date = OFFICIAL_DRAW_DATE
-            changed = True
-        official_delivery = _official_delivery_utc()
-        if raffle.delivery_datetime != official_delivery:
-            raffle.delivery_datetime = official_delivery
-            changed = True
-        if raffle.lottery_draw_reference != OFFICIAL_LOTTERY_REF:
-            raffle.lottery_draw_reference = OFFICIAL_LOTTERY_REF
-            changed = True
-        if changed or "30 de diciembre" in (raffle.public_rules or ""):
-            raffle.public_rules = DEFAULT_RULES
+        raffle.ticket_price = OFFICIAL_TICKET_PRICE
+        raffle.draw_date = OFFICIAL_DRAW_DATE
+        raffle.delivery_datetime = _official_delivery_utc()
+        raffle.lottery_draw_reference = OFFICIAL_LOTTERY_REF
+        raffle.public_rules = DEFAULT_RULES
 
     existing = {t.number_code for t in raffle.tickets}
     for i in range(100):
