@@ -9,6 +9,7 @@ from app.models.ticket import Ticket
 
 OFFICIAL_DRAW_DATE = date(2026, 12, 22)
 OFFICIAL_TICKET_PRICE = 30_000
+OFFICIAL_LOTTERY_NAME = "Lotería de la Cruz Roja"
 OFFICIAL_LOTTERY_REF = "Sorteo del 22 de diciembre de 2026 (premio mayor)"
 
 DEFAULT_RULES = """REGLAMENTO DE LA RIFA
@@ -18,7 +19,7 @@ DEFAULT_RULES = """REGLAMENTO DE LA RIFA
 3. Premio principal: un cerdo de 90 kilogramos y una garrafa de aguardiente.
 4. Premio alternativo: $1.200.000 COP en efectivo, sujeto a las condiciones oficiales.
 5. Fecha del sorteo: 22 de diciembre de 2026.
-6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería del Valle del sorteo previamente definido.
+6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería de la Cruz Roja del sorteo previamente definido.
 7. Entrega del premio: 23 de diciembre de 2026 a las 11:00 a. m., hora de Colombia (America/Bogota).
 8. La asignación de un número lo reserva aunque el pago no esté completo. Solo se libera mediante anulación autorizada.
 9. Antes de comercializar, verifique los requisitos legales aplicables en Colombia para rifas y juegos de suerte y azar.
@@ -48,7 +49,7 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
             ticket_price=OFFICIAL_TICKET_PRICE,
             draw_date=OFFICIAL_DRAW_DATE,
             delivery_datetime=_official_delivery_utc(),
-            lottery_name="Lotería del Valle",
+            lottery_name=OFFICIAL_LOTTERY_NAME,
             lottery_draw_reference=OFFICIAL_LOTTERY_REF,
             status=RaffleStatus.ACTIVE,
             public_contact="Contacto del organizador: configurar en panel de administración.",
@@ -63,6 +64,7 @@ def ensure_raffle_and_tickets(db: Session) -> Raffle:
         raffle.ticket_price = OFFICIAL_TICKET_PRICE
         raffle.draw_date = OFFICIAL_DRAW_DATE
         raffle.delivery_datetime = _official_delivery_utc()
+        raffle.lottery_name = OFFICIAL_LOTTERY_NAME
         raffle.lottery_draw_reference = OFFICIAL_LOTTERY_REF
         raffle.public_rules = DEFAULT_RULES
 

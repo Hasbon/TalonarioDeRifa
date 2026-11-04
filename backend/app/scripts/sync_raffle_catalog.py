@@ -8,6 +8,7 @@ from app.db.base import Base
 from app.db.seed import (
     DEFAULT_RULES,
     OFFICIAL_DRAW_DATE,
+    OFFICIAL_LOTTERY_NAME,
     OFFICIAL_LOTTERY_REF,
     OFFICIAL_TICKET_PRICE,
     _official_delivery_utc,
@@ -19,8 +20,11 @@ import app.models  # noqa: F401
 
 def main() -> int:
     Base.metadata.create_all(bind=engine)
-    with engine.begin() as conn:
-        conn.execute(text("UPDATE raffles SET status = lower(status) WHERE upper(status) = status"))
+    if engine.dialect.name == "sqlite":
+        with engine.begin() as conn:
+            conn.execute(
+                text("UPDATE raffles SET status = lower(status) WHERE upper(status) = status")
+            )
 
     db = SessionLocal()
     try:
@@ -29,6 +33,7 @@ def main() -> int:
         raffle.draw_date = OFFICIAL_DRAW_DATE
         raffle.delivery_datetime = _official_delivery_utc()
         raffle.ticket_price = OFFICIAL_TICKET_PRICE
+        raffle.lottery_name = OFFICIAL_LOTTERY_NAME
         raffle.lottery_draw_reference = OFFICIAL_LOTTERY_REF
         raffle.public_rules = DEFAULT_RULES
         db.commit()
@@ -36,6 +41,7 @@ def main() -> int:
         print(f"draw={raffle.draw_date}")
         print(f"delivery={raffle.delivery_datetime}")
         print(f"price={raffle.ticket_price}")
+        print(f"lottery={raffle.lottery_name}")
         return 0
     finally:
         db.close()

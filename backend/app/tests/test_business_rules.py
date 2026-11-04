@@ -206,7 +206,7 @@ def test_seller_cannot_admin_actions(client, seller_token):
         "/api/admin/raffle/results",
         headers=auth(seller_token),
         json={
-            "lottery_name": "Lotería del Valle",
+            "lottery_name": "Lotería de la Cruz Roja",
             "draw_reference": "test",
             "draw_date": "2026-12-22",
             "winning_number": "12347",
@@ -270,7 +270,7 @@ def test_winner_derivation_and_confirm(client, admin_token):
         "/api/admin/raffle/results",
         headers=auth(admin_token),
         json={
-            "lottery_name": "Lotería del Valle",
+            "lottery_name": "Lotería de la Cruz Roja",
             "draw_reference": "Sorteo 30-dic-2026",
             "draw_date": "2026-12-22",
             "winning_number": "458147",

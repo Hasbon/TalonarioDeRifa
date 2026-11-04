@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import NumberBoard from '../components/NumberBoard';
 import PublicHeader from '../components/PublicHeader';
 import { FLYER_ALT, granRifaFlyerUrl } from '../assets/raffleAssets';
@@ -28,6 +29,10 @@ export default function PublicHome() {
 
   return (
     <main className="public-home">
+      <Link to="/login" className="seller-fab">
+        Acceso vendedores
+      </Link>
+
       <section className="hero-flyer" aria-label="Gran Rifa de Fin de Año">
         <img
           className="hero-flyer__image"

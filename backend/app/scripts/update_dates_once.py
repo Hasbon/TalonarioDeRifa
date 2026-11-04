@@ -11,7 +11,7 @@ RULES = """REGLAMENTO DE LA RIFA
 3. Premio principal: un cerdo de 90 kilogramos y una garrafa de aguardiente.
 4. Premio alternativo: $1.200.000 COP en efectivo, sujeto a las condiciones oficiales.
 5. Fecha del sorteo: 22 de diciembre de 2026.
-6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería del Valle del sorteo previamente definido.
+6. El número ganador corresponde a las dos últimas cifras del premio mayor de la Lotería de la Cruz Roja del sorteo previamente definido.
 7. Entrega del premio: 23 de diciembre de 2026 a las 11:00 a. m., hora de Colombia (America/Bogota).
 8. La asignación de un número lo reserva aunque el pago no esté completo. Solo se libera mediante anulación autorizada.
 9. Antes de comercializar, verifique los requisitos legales aplicables en Colombia para rifas y juegos de suerte y azar.
@@ -31,6 +31,7 @@ def main() -> None:
             2026, 12, 23, 11, 0, 0, tzinfo=ZoneInfo("America/Bogota")
         ).astimezone(timezone.utc)
         raffle.ticket_price = 30000
+        raffle.lottery_name = "Lotería de la Cruz Roja"
         raffle.lottery_draw_reference = "Sorteo del 22 de diciembre de 2026 (premio mayor)"
         raffle.public_rules = RULES
         db.commit()

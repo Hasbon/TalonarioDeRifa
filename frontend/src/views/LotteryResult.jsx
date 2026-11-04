@@ -5,7 +5,7 @@ import './FormPages.css';
 export default function LotteryResult() {
   const [results, setResults] = useState([]);
   const [form, setForm] = useState({
-    lottery_name: 'Lotería del Valle',
+    lottery_name: 'Lotería de la Cruz Roja',
     draw_reference: '',
     draw_date: '2026-12-22',
     winning_number: '',

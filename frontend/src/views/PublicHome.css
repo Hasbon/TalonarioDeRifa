@@ -117,6 +117,10 @@
   padding: 1rem 0 2rem;
 }
 
+.seller-fab {
+  display: none;
+}
+
 @keyframes heroIn {
   from {
     opacity: 0;
@@ -137,17 +141,37 @@
   }
 }
 
-@media (max-width: 640px) {
-  .hero-flyer,
-  .hero-flyer__image {
-    height: auto;
-    min-height: 70vh;
-    max-height: none;
+@media (max-width: 860px) {
+  .hero-flyer {
+    display: none;
   }
 
-  .hero-flyer__image {
-    height: auto;
-    min-height: 70vh;
-    object-fit: cover;
+  .public-home__body {
+    margin-top: 0;
+    padding-top: 0.75rem;
+  }
+
+  .seller-fab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0.85rem;
+    right: 0.85rem;
+    z-index: 1000;
+    padding: 0.65rem 0.95rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--rojo-medio), var(--rojo-oscuro));
+    color: #fff8e7;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(72, 16, 18, 0.35);
+    border: 1px solid rgba(255, 248, 231, 0.25);
+  }
+
+  .seller-fab:hover {
+    text-decoration: none;
+    filter: brightness(1.06);
   }
 }

@@ -27,7 +27,7 @@ Frontend y backend se comunican **solo** mediante la API REST documentada en `/d
 - Alternativa: $1.200.000 COP  
 - Precio boleta: $30.000 COP  
 - Números: `00` … `99` (se conservan ceros a la izquierda)  
-- Ganador: dos últimas cifras del premio mayor de la Lotería del Valle  
+- Ganador: dos últimas cifras del premio mayor de la Lotería de la Cruz Roja  
 
 **Regla fundamental:** al asignar un número queda **ocupado aunque no haya pago completo**. No hay liberación automática por falta de pago ni por fecha de compromiso vencida. Solo un administrador puede anular con motivo auditado; el historial financiero se conserva.
 
