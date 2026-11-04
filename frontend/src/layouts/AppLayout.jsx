@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
+import AppMenu from '../components/AppMenu';
 import { useAuth } from '../hooks/useAuth';
 import './AppLayout.css';
 
 export default function AppLayout() {
   const { user, loading, logout, isAdmin } = useAuth();
-  const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
 
   if (loading) {
     return <p className="container alert alert-info">Cargando sesión…</p>;
@@ -20,53 +14,8 @@ export default function AppLayout() {
   }
 
   return (
-    <div className={`app-shell${menuOpen ? ' app-shell--menu-open' : ''}`}>
-      <aside className="app-nav" aria-label="Navegación del panel">
-        <div className="app-nav__bar">
-          <div className="app-nav__brand">
-            <strong>Rifa Digital</strong>
-            <span className="app-nav__user">{user.full_name}</span>
-            <small className="app-nav__role">{isAdmin ? 'Administrador' : 'Vendedor'}</small>
-          </div>
-          <button
-            type="button"
-            className="app-nav__toggle"
-            aria-expanded={menuOpen}
-            aria-controls="app-nav-panel"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <span className="app-nav__toggle-icon" aria-hidden="true">
-              {menuOpen ? '✕' : '☰'}
-            </span>
-            <span className="app-nav__toggle-label">{menuOpen ? 'Cerrar' : 'Menú'}</span>
-          </button>
-        </div>
-
-        <div id="app-nav-panel" className="app-nav__panel">
-          <nav>
-            <NavLink to="/app" end>
-              Tablero
-            </NavLink>
-            <NavLink to="/app/nueva-venta">Nueva venta</NavLink>
-            <NavLink to="/app/ventas">Mis ventas</NavLink>
-            <NavLink to="/app/reportes">Reportes</NavLink>
-            {isAdmin && (
-              <>
-                <NavLink to="/app/usuarios">Usuarios</NavLink>
-                <NavLink to="/app/configuracion">Configuración</NavLink>
-                <NavLink to="/app/resultado">Resultado</NavLink>
-                <NavLink to="/app/auditoria">Auditoría</NavLink>
-              </>
-            )}
-          </nav>
-          <button type="button" className="btn btn-ghost" onClick={logout}>
-            Cerrar sesión
-          </button>
-          <a className="app-nav__public" href="/">
-            Ver página pública
-          </a>
-        </div>
-      </aside>
+    <div className="app-shell">
+      <AppMenu user={user} isAdmin={isAdmin} onLogout={logout} />
       <main className="app-main">
         <Outlet />
       </main>
