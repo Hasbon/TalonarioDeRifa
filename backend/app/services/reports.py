@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.core.enums import CommercialStatus, PaymentRecordStatus, PaymentStatusSale
 from app.models.customer import Customer
 from app.models.payment import Payment
+from app.models.raffle import Raffle
 from app.models.sale import Sale
 from app.models.ticket import Ticket
 from app.models.user import User
@@ -14,12 +15,21 @@ from app.utils.money import confirmed_total
 
 
 def dashboard_stats(db: Session) -> DashboardStats:
-    total_numbers = db.query(Ticket).count()
-    assigned = (
-        db.query(Sale)
-        .filter(Sale.commercial_status == CommercialStatus.ACTIVE)
-        .count()
-    )
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
+    if raffle is None:
+        total_numbers = 0
+        assigned = 0
+    else:
+        total_numbers = db.query(Ticket).filter(Ticket.raffle_id == raffle.id).count()
+        assigned = (
+            db.query(Sale)
+            .join(Ticket, Sale.ticket_id == Ticket.id)
+            .filter(
+                Ticket.raffle_id == raffle.id,
+                Sale.commercial_status == CommercialStatus.ACTIVE,
+            )
+            .count()
+        )
     available = total_numbers - assigned
 
     active_sales = (

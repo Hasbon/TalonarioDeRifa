@@ -11,14 +11,14 @@ from app.schemas.raffle import PublicRaffleOut, PublicTicketDetailOut, PublicTic
 
 
 def get_public_raffle(db: Session) -> PublicRaffleOut:
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
     return PublicRaffleOut.model_validate(raffle)
 
 
 def list_public_tickets(db: Session) -> list[PublicTicketOut]:
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
 
@@ -42,7 +42,7 @@ def list_public_tickets(db: Session) -> list[PublicTicketOut]:
 
 def get_public_ticket(db: Session, number_code: str) -> PublicTicketDetailOut:
     code = number_code.zfill(2)
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
     ticket = (

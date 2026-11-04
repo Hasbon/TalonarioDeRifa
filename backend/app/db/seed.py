@@ -40,7 +40,8 @@ def _official_delivery_utc() -> datetime:
 
 
 def ensure_raffle_and_tickets(db: Session) -> Raffle:
-    raffle = db.query(Raffle).first()
+    # Always reuse the oldest raffle so dyno restarts never create a second talonario.
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if raffle is None:
         raffle = Raffle(
             name="Rifa Fin de Año 2026",

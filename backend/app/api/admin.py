@@ -26,7 +26,7 @@ router = APIRouter()
 
 @router.get("/raffle", response_model=PublicRaffleOut)
 def get_raffle(db: Session = Depends(get_db), user: User = Depends(require_admin)):
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
     return PublicRaffleOut.model_validate(raffle)
@@ -38,7 +38,7 @@ def update_raffle(
     db: Session = Depends(get_db),
     user: User = Depends(require_admin),
 ):
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
 

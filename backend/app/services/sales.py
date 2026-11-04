@@ -27,7 +27,7 @@ from app.utils.phone import normalize_phone
 
 
 def get_active_raffle(db: Session) -> Raffle:
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="No hay rifa configurada")
     return raffle

@@ -55,7 +55,7 @@ def _to_out(db: Session, result: LotteryResult) -> LotteryResultOut:
 
 
 def create_result(db: Session, data: LotteryResultCreate, admin: User) -> LotteryResultOut:
-    raffle = db.query(Raffle).first()
+    raffle = db.query(Raffle).order_by(Raffle.created_at.asc()).first()
     if not raffle:
         raise HTTPException(status_code=404, detail="Rifa no encontrada")
     try:
