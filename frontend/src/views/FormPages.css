@@ -129,9 +129,39 @@ table.data th {
   color: #374151;
 }
 
+.cell-datetime {
+  white-space: nowrap;
+}
+
+.cell-datetime__date,
+.cell-datetime__time {
+  display: inline;
+}
+
+.cell-datetime__time::before {
+  content: ' ';
+}
+
 @media (max-width: 860px) {
   .table-wrap td.cell-datetime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     font-size: 70%;
-    white-space: nowrap;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .cell-datetime__date,
+  .cell-datetime__time {
+    display: block;
+  }
+
+  .cell-datetime__time {
+    padding-left: 0.75em;
+  }
+
+  .cell-datetime__time::before {
+    content: none;
   }
 }

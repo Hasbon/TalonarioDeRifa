@@ -5,7 +5,7 @@ import {
   formatCOP,
   formatDate,
   formatDateTime,
-  formatDateTimeCompact,
+  formatDateTimeCompactParts,
   paymentStatusLabel,
 } from '../utils/format';
 import './FormPages.css';
@@ -134,15 +134,21 @@ export default function SaleDetail() {
             </tr>
           </thead>
           <tbody>
-            {sale.payments.map((p) => (
-              <tr key={p.id}>
-                <td className="cell-datetime">{formatDateTimeCompact(p.payment_date)}</td>
-                <td>{formatCOP(p.amount)}</td>
-                <td>{p.payment_method}</td>
-                <td>{p.status}</td>
-                <td>{p.payment_reference || '—'}</td>
-              </tr>
-            ))}
+            {sale.payments.map((p) => {
+              const { date, time } = formatDateTimeCompactParts(p.payment_date);
+              return (
+                <tr key={p.id}>
+                  <td className="cell-datetime">
+                    <span className="cell-datetime__date">{date}</span>
+                    {time ? <span className="cell-datetime__time">{time}</span> : null}
+                  </td>
+                  <td>{formatCOP(p.amount)}</td>
+                  <td>{p.payment_method}</td>
+                  <td>{p.status}</td>
+                  <td>{p.payment_reference || '—'}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

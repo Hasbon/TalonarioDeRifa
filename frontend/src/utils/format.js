@@ -42,9 +42,9 @@ export function formatDateTime(iso) {
   });
 }
 
-/** Compact: 4/11/2026 18:09 (America/Bogota, 24h). */
-export function formatDateTimeCompact(iso) {
-  if (!iso) return '—';
+/** Compact parts: { date: '4/11/2026', time: '18:09' } (America/Bogota, 24h). */
+export function formatDateTimeCompactParts(iso) {
+  if (!iso) return { date: '—', time: '' };
   const d = new Date(iso);
   const parts = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'America/Bogota',
@@ -62,7 +62,16 @@ export function formatDateTimeCompact(iso) {
   const year = get('year');
   const hour = get('hour');
   const minute = get('minute');
-  return `${day}/${month}/${year} ${hour}:${minute}`;
+  return {
+    date: `${day}/${month}/${year}`,
+    time: `${hour}:${minute}`,
+  };
+}
+
+/** Compact: 4/11/2026 18:09 (America/Bogota, 24h). */
+export function formatDateTimeCompact(iso) {
+  const { date, time } = formatDateTimeCompactParts(iso);
+  return time ? `${date} ${time}` : date;
 }
 
 export function paymentStatusLabel(status) {
