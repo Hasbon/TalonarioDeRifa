@@ -128,3 +128,10 @@ table.data th {
   background: #e5e7eb;
   color: #374151;
 }
+
+@media (max-width: 860px) {
+  .table-wrap td.cell-datetime {
+    font-size: 70%;
+    white-space: nowrap;
+  }
+}

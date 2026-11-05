@@ -50,7 +50,14 @@ def db(db_engine):
         role=UserRole.SELLER,
         is_active=True,
     )
-    session.add_all([admin, seller])
+    seller2 = User(
+        username="vendedor2",
+        password_hash=hash_password("SellerPass123!"),
+        full_name="Vendedor Dos",
+        role=UserRole.SELLER,
+        is_active=True,
+    )
+    session.add_all([admin, seller, seller2])
     session.commit()
     try:
         yield session
@@ -85,6 +92,13 @@ def admin_token(client):
 @pytest.fixture()
 def seller_token(client):
     r = client.post("/api/auth/login", json={"username": "vendedor1", "password": "SellerPass123!"})
+    assert r.status_code == 200, r.text
+    return r.json()["access_token"]
+
+
+@pytest.fixture()
+def seller2_token(client):
+    r = client.post("/api/auth/login", json={"username": "vendedor2", "password": "SellerPass123!"})
     assert r.status_code == 200, r.text
     return r.json()["access_token"]
 

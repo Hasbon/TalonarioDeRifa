@@ -42,6 +42,15 @@ def create_sale(
     return sales_service.create_sale(db, body, user)
 
 
+@router.get("/by-number/{number_code}", response_model=SaleOut)
+def get_sale_by_number(
+    number_code: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(require_seller_or_admin),
+):
+    return sales_service.get_sale_by_number(db, number_code, user)
+
+
 @router.get("/{sale_id}", response_model=SaleOut)
 def get_sale(
     sale_id: str,

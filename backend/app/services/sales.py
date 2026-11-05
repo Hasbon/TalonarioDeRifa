@@ -33,7 +33,19 @@ def get_active_raffle(db: Session) -> Raffle:
     return raffle
 
 
-def _sale_to_out(sale: Sale, public_token: str | None = None) -> SaleOut:
+def _can_edit_sale(sale: Sale, user: User | None) -> bool:
+    if user is None:
+        return False
+    if user.role == UserRole.ADMIN:
+        return True
+    return sale.seller_id == user.id
+
+
+def _sale_to_out(
+    sale: Sale,
+    user: User | None = None,
+    public_token: str | None = None,
+) -> SaleOut:
     total = confirmed_total(list(sale.payments))
     token = public_token
     if token is None:
@@ -57,6 +69,7 @@ def _sale_to_out(sale: Sale, public_token: str | None = None) -> SaleOut:
         cancellation_reason=sale.cancellation_reason,
         public_token=token,
         payments=[PaymentOut.model_validate(p) for p in sale.payments],
+        can_edit=_can_edit_sale(sale, user),
     )
 
 
@@ -163,7 +176,7 @@ def create_sale(db: Session, data: SaleCreate, seller: User) -> SaleOut:
         .filter(Sale.id == sale_id)
         .one()
     )
-    return _sale_to_out(sale, public_token=public_token_value)
+    return _sale_to_out(sale, user=seller, public_token=public_token_value)
 
 
 def list_sales(
@@ -204,11 +217,11 @@ def list_sales(
         q = q.filter(Sale.commercial_status == commercial_status)
 
     sales = q.order_by(Sale.assigned_at.desc()).all()
-    return [_sale_to_out(s) for s in sales]
+    return [_sale_to_out(s, user=user) for s in sales]
 
 
-def get_sale(db: Session, sale_id: str, user: User) -> SaleOut:
-    sale = (
+def _load_sale(db: Session, sale_id: str) -> Sale | None:
+    return (
         db.query(Sale)
         .options(
             joinedload(Sale.customer),
@@ -219,11 +232,38 @@ def get_sale(db: Session, sale_id: str, user: User) -> SaleOut:
         .filter(Sale.id == sale_id)
         .first()
     )
+
+
+def get_sale(db: Session, sale_id: str, user: User) -> SaleOut:
+    sale = _load_sale(db, sale_id)
     if not sale:
         raise HTTPException(status_code=404, detail="Venta no encontrada")
-    if user.role == UserRole.SELLER and sale.seller_id != user.id:
-        raise HTTPException(status_code=403, detail="No autorizado para esta venta")
-    return _sale_to_out(sale)
+    # Any authenticated seller/admin may view; writes stay owner-only.
+    return _sale_to_out(sale, user=user)
+
+
+def get_sale_by_number(db: Session, number_code: str, user: User) -> SaleOut:
+    code = number_code.zfill(2)
+    raffle = get_active_raffle(db)
+    sale = (
+        db.query(Sale)
+        .options(
+            joinedload(Sale.customer),
+            joinedload(Sale.seller),
+            joinedload(Sale.payments),
+            joinedload(Sale.ticket).joinedload(Ticket.public_tokens),
+        )
+        .join(Ticket)
+        .filter(
+            Ticket.raffle_id == raffle.id,
+            Ticket.number_code == code,
+            Sale.commercial_status == CommercialStatus.ACTIVE,
+        )
+        .first()
+    )
+    if not sale:
+        raise HTTPException(status_code=404, detail="No hay venta activa para ese número")
+    return _sale_to_out(sale, user=user)
 
 
 def update_sale(db: Session, sale_id: str, data: SaleUpdate, user: User) -> SaleOut:
@@ -293,7 +333,7 @@ def cancel_sale(db: Session, sale_id: str, data: SaleCancel, admin: User) -> Sal
     )
     db.commit()
     db.refresh(sale)
-    return _sale_to_out(sale)
+    return _sale_to_out(sale, user=admin)
 
 
 def add_payment(db: Session, sale_id: str, amount: int, method: str, reference: str | None, confirm: bool, user: User, notes: str | None = None) -> PaymentOut:

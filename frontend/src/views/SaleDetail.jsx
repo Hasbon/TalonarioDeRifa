@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { salesApi } from '../services/api';
-import { formatCOP, formatDate, formatDateTime, paymentStatusLabel } from '../utils/format';
+import {
+  formatCOP,
+  formatDate,
+  formatDateTime,
+  formatDateTimeCompact,
+  paymentStatusLabel,
+} from '../utils/format';
 import './FormPages.css';
 
 export default function SaleDetail() {
@@ -94,6 +100,12 @@ export default function SaleDetail() {
         <p>
           <strong>Vendedor:</strong> {sale.seller.full_name}
         </p>
+        {!sale.can_edit && sale.commercial_status === 'active' && (
+          <div className="alert alert-info">
+            Vendida por {sale.seller.full_name} — solo lectura. No puede registrar abonos ni
+            modificar esta boleta.
+          </div>
+        )}
         {sale.internal_notes && (
           <p>
             <strong>Observaciones:</strong> {sale.internal_notes}
@@ -126,7 +138,7 @@ export default function SaleDetail() {
           <tbody>
             {sale.payments.map((p) => (
               <tr key={p.id}>
-                <td>{formatDateTime(p.payment_date)}</td>
+                <td className="cell-datetime">{formatDateTimeCompact(p.payment_date)}</td>
                 <td>{formatCOP(p.amount)}</td>
                 <td>{p.payment_method}</td>
                 <td>{p.status}</td>
@@ -137,7 +149,7 @@ export default function SaleDetail() {
         </table>
       </div>
 
-      {sale.commercial_status === 'active' && sale.balance_due > 0 && (
+      {sale.can_edit && sale.commercial_status === 'active' && sale.balance_due > 0 && (
         <form className="form-card" onSubmit={addPayment} style={{ marginBottom: '1.25rem' }}>
           <h3>Registrar abono</h3>
           <div className="form-row">

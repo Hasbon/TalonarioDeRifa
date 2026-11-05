@@ -1,43 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NumberBoard from '../components/NumberBoard';
 import { adminApi, publicApi, salesApi } from '../services/api';
 import { formatCOP } from '../utils/format';
 import './Dashboard.css';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [tickets, setTickets] = useState([]);
-  const [salesByNumber, setSalesByNumber] = useState({});
   const [error, setError] = useState('');
+  const [busyNumber, setBusyNumber] = useState('');
 
   useEffect(() => {
     (async () => {
       try {
-        const [s, t, sales] = await Promise.all([
-          adminApi.reports(),
-          publicApi.getTickets(),
-          salesApi.list({ commercial_status: 'active' }),
-        ]);
+        const [s, t] = await Promise.all([adminApi.reports(), publicApi.getTickets()]);
         setStats(s);
         setTickets(t);
-        const map = {};
-        sales.forEach((sale) => {
-          map[sale.number_code] = sale;
-        });
-        setSalesByNumber(map);
       } catch (e) {
         setError(e.response?.data?.detail || 'Error al cargar tablero');
       }
     })();
   }, []);
 
-  const onSelect = (ticket) => {
-    const sale = salesByNumber[ticket.number_code];
-    if (sale) {
-      window.location.href = `/app/ventas/${sale.id}`;
-    } else {
-      window.location.href = `/app/nueva-venta?numero=${ticket.number_code}`;
+  const onSelect = async (ticket) => {
+    setError('');
+    if (ticket.available) {
+      navigate(`/app/nueva-venta?numero=${ticket.number_code}`);
+      return;
+    }
+    setBusyNumber(ticket.number_code);
+    try {
+      const sale = await salesApi.byNumber(ticket.number_code);
+      navigate(`/app/ventas/${sale.id}`);
+    } catch (e) {
+      setError(e.response?.data?.detail || `No se pudo abrir la boleta ${ticket.number_code}`);
+    } finally {
+      setBusyNumber('');
     }
   };
 
@@ -50,6 +50,9 @@ export default function Dashboard() {
         </Link>
       </header>
       {error && <div className="alert alert-error">{error}</div>}
+      {busyNumber && (
+        <div className="alert alert-info">Abriendo boleta {busyNumber}…</div>
+      )}
       {stats && (
         <div className="kpi-grid">
           <div className="kpi">

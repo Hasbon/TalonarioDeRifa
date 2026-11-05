@@ -83,6 +83,7 @@ class SaleOut(BaseModel):
     cancellation_reason: str | None
     public_token: str | None = None
     payments: list[PaymentOut] = []
+    can_edit: bool = False
 
     model_config = {"from_attributes": True}
 

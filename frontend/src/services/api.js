@@ -51,6 +51,7 @@ export const authApi = {
 export const salesApi = {
   list: (params) => api.get('/sales', { params }).then((r) => r.data),
   get: (id) => api.get(`/sales/${id}`).then((r) => r.data),
+  byNumber: (code) => api.get(`/sales/by-number/${code}`).then((r) => r.data),
   create: (body) => api.post('/sales', body).then((r) => r.data),
   update: (id, body) => api.patch(`/sales/${id}`, body).then((r) => r.data),
   cancel: (id, reason) => api.post(`/sales/${id}/cancel`, { reason }).then((r) => r.data),

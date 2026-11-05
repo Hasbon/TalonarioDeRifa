@@ -25,6 +25,25 @@ export default function NewSale() {
     publicApi.getRaffle().then((r) => setTicketPrice(r.ticket_price)).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const code = (params.get('numero') || '').padStart(2, '0');
+    if (!/^\d{2}$/.test(code)) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const sale = await salesApi.byNumber(code);
+        if (!cancelled && sale?.id) {
+          navigate(`/app/ventas/${sale.id}`, { replace: true });
+        }
+      } catch {
+        // 404 = número libre; se puede vender.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [params, navigate]);
+
   const balance = useMemo(() => {
     const abono = Number(form.initial_payment) || 0;
     return Math.max(0, ticketPrice - abono);

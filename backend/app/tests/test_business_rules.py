@@ -317,3 +317,44 @@ def test_draw_dates_remain_2026(client):
     raffle = client.get("/api/public/raffle").json()
     assert raffle["draw_date"].startswith("2026")
     assert "2026-12-23" in raffle["delivery_datetime"]
+
+
+def test_other_seller_can_view_but_not_edit(client, seller_token, seller2_token):
+    created = client.post(
+        "/api/sales",
+        headers=auth(seller_token),
+        json={
+            "customer_full_name": "Comprador Ajenos",
+            "customer_phone": "3005556677",
+            "number_code": "06",
+            "initial_payment": 5000,
+        },
+    )
+    assert created.status_code == 201, created.text
+    sale_id = created.json()["id"]
+    assert created.json()["can_edit"] is True
+
+    by_number = client.get("/api/sales/by-number/06", headers=auth(seller2_token))
+    assert by_number.status_code == 200, by_number.text
+    body = by_number.json()
+    assert body["id"] == sale_id
+    assert body["customer"]["full_name"] == "Comprador Ajenos"
+    assert body["can_edit"] is False
+
+    viewed = client.get(f"/api/sales/{sale_id}", headers=auth(seller2_token))
+    assert viewed.status_code == 200
+    assert viewed.json()["can_edit"] is False
+
+    denied = client.post(
+        f"/api/sales/{sale_id}/payments",
+        headers=auth(seller2_token),
+        json={"amount": 1000, "payment_method": "efectivo", "confirm": True},
+    )
+    assert denied.status_code == 403
+
+    allowed = client.post(
+        f"/api/sales/{sale_id}/payments",
+        headers=auth(seller_token),
+        json={"amount": 1000, "payment_method": "efectivo", "confirm": True},
+    )
+    assert allowed.status_code == 201, allowed.text
