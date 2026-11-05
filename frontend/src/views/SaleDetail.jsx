@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import { salesApi } from '../services/api';
 import {
   formatCOP,
@@ -13,7 +12,6 @@ import './FormPages.css';
 
 export default function SaleDetail() {
   const { saleId } = useParams();
-  const { isAdmin } = useAuth();
   const [sale, setSale] = useState(null);
   const [error, setError] = useState('');
   const [payment, setPayment] = useState({ amount: '', payment_method: 'efectivo', payment_reference: '' });
@@ -190,20 +188,24 @@ export default function SaleDetail() {
         </form>
       )}
 
-      {isAdmin && sale.commercial_status === 'active' && (
+      {sale.can_edit && sale.commercial_status === 'active' && (
         <div className="form-card">
-          <h3>Anular asignación</h3>
-          <p>Libera el número sin borrar el historial financiero.</p>
+          <h3>Anular boleta</h3>
+          <p>
+            Úselo si el cliente no va a pagar. Libera el número para venderlo de nuevo y conserva
+            el historial de pagos.
+          </p>
           <div className="form-group">
             <label>Motivo obligatorio</label>
             <textarea
               rows={3}
               value={cancelReason}
               onChange={(e) => setCancelReason(e.target.value)}
+              placeholder="Ej. El cliente indicó que no pagará la boleta"
             />
           </div>
           <button type="button" className="btn btn-danger" onClick={cancel}>
-            Anular asignación
+            Anular boleta y liberar número
           </button>
         </div>
       )}

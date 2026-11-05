@@ -319,6 +319,39 @@ def test_draw_dates_remain_2026(client):
     assert "2026-12-23" in raffle["delivery_datetime"]
 
 
+def test_owner_seller_can_cancel_and_release_number(client, seller_token, seller2_token):
+    created = client.post(
+        "/api/sales",
+        headers=auth(seller_token),
+        json={
+            "customer_full_name": "Cliente Desiste",
+            "customer_phone": "3004445566",
+            "number_code": "33",
+            "initial_payment": 0,
+        },
+    )
+    assert created.status_code == 201, created.text
+    sale_id = created.json()["id"]
+
+    denied = client.post(
+        f"/api/sales/{sale_id}/cancel",
+        headers=auth(seller2_token),
+        json={"reason": "Intento de anulación ajena"},
+    )
+    assert denied.status_code == 403
+
+    cancel = client.post(
+        f"/api/sales/{sale_id}/cancel",
+        headers=auth(seller_token),
+        json={"reason": "El cliente indicó que no pagará la boleta"},
+    )
+    assert cancel.status_code == 200, cancel.text
+    assert cancel.json()["commercial_status"] == "cancelled"
+
+    pub = client.get("/api/public/tickets/33")
+    assert pub.json()["available"] is True
+
+
 def test_other_seller_can_view_but_not_edit(client, seller_token, seller2_token):
     created = client.post(
         "/api/sales",

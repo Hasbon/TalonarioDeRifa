@@ -293,10 +293,7 @@ def update_sale(db: Session, sale_id: str, data: SaleUpdate, user: User) -> Sale
     return get_sale(db, sale_id, user)
 
 
-def cancel_sale(db: Session, sale_id: str, data: SaleCancel, admin: User) -> SaleOut:
-    if admin.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Solo un administrador puede anular")
-
+def cancel_sale(db: Session, sale_id: str, data: SaleCancel, user: User) -> SaleOut:
     sale = (
         db.query(Sale)
         .options(
@@ -310,6 +307,11 @@ def cancel_sale(db: Session, sale_id: str, data: SaleCancel, admin: User) -> Sal
     )
     if not sale:
         raise HTTPException(status_code=404, detail="Venta no encontrada")
+    if user.role != UserRole.ADMIN and sale.seller_id != user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Solo el vendedor de la boleta o un administrador puede anular",
+        )
     if sale.commercial_status != CommercialStatus.ACTIVE:
         raise HTTPException(status_code=400, detail="La venta ya está anulada")
 
@@ -324,7 +326,7 @@ def cancel_sale(db: Session, sale_id: str, data: SaleCancel, admin: User) -> Sal
 
     write_audit(
         db,
-        user_id=admin.id,
+        user_id=user.id,
         action="sale.cancel",
         entity_type="sale",
         entity_id=sale.id,
@@ -333,7 +335,7 @@ def cancel_sale(db: Session, sale_id: str, data: SaleCancel, admin: User) -> Sal
     )
     db.commit()
     db.refresh(sale)
-    return _sale_to_out(sale, user=admin)
+    return _sale_to_out(sale, user=user)
 
 
 def add_payment(db: Session, sale_id: str, amount: int, method: str, reference: str | None, confirm: bool, user: User, notes: str | None = None) -> PaymentOut:

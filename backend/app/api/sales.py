@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.user import User
 from app.schemas.sale import SaleCancel, SaleCreate, SaleOut, SaleUpdate, PaymentCreate, PaymentOut
-from app.security.deps import require_admin, require_seller_or_admin
+from app.security.deps import require_seller_or_admin
 from app.services import sales as sales_service
 
 router = APIRouter()
@@ -75,7 +75,7 @@ def cancel_sale(
     sale_id: str,
     body: SaleCancel,
     db: Session = Depends(get_db),
-    user: User = Depends(require_admin),
+    user: User = Depends(require_seller_or_admin),
 ):
     return sales_service.cancel_sale(db, sale_id, body, user)
 
